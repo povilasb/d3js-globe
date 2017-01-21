@@ -1,9 +1,9 @@
 function setupRotation(svg, projection) {
-  var spinX = d3.scale.linear()
+  var spinX = d3.scaleLinear()
     .domain([0, width])
     .range([-180, 180]);
 
-  var spinY = d3.scale.linear()
+  var spinY = d3.scaleLinear()
     .domain([0, height])
     .range([90, -90]);
 
@@ -29,14 +29,12 @@ function setupRotation(svg, projection) {
 var width = window.innerWidth;
 var height = window.innerHeight;
 
-var projection = d3.geo
-  .orthographic()
+var projection = d3.geoOrthographic()
   .scale(300)
   .clipAngle(90)
   .translate([width / 2, height / 2]);
 
-var path = d3.geo
-  .path()
+var path = d3.geoPath()
   .pointRadius(2)
   .projection(projection);
 
