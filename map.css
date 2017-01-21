@@ -1,9 +1,13 @@
-path {
+svg#world-map {
+  background: #000;
+}
+
+#world-map path.country {
   stroke: white;
   stroke-width: 0.5px;
   fill: green;
 }
 
-svg#world-map {
-  background: #09f;
+#world-map #sphere {
+  fill: #09f;
 }
