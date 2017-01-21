@@ -1,3 +1,31 @@
+function setupRotation(svg, projection) {
+  var spinX = d3.scale.linear()
+    .domain([0, width])
+    .range([-180, 180]);
+
+  var spinY = d3.scale.linear()
+    .domain([0, height])
+    .range([90, -90]);
+
+  var mouseDown = false;
+
+  svg.on("mousemove", function() {
+    if (mouseDown == true) {
+      var p = d3.mouse(this);
+      projection.rotate([spinX(p[0]), spinY(p[1])]);
+      svg.selectAll("path").attr("d", path);
+    }
+  });
+
+  svg.on("mousedown", function() {
+    mouseDown = true;
+  });
+
+  svg.on("mouseup", function() {
+    mouseDown = false;
+  });
+}
+
 var width = window.innerWidth;
 var height = window.innerHeight;
 
@@ -17,12 +45,14 @@ var svg = d3.select("#world-map")
   .attr("height", height);
 
 svg.append("defs").append("path")
-    .datum({type: "Sphere"})
-    .attr("id", "sphere")
-    .attr("d", path);
+  .datum({type: "Sphere"})
+  .attr("id", "sphere")
+  .attr("d", path);
 svg.append("use")
-    .attr("class", "stroke")
-    .attr("xlink:href", "#sphere");
+  .attr("class", "stroke")
+  .attr("xlink:href", "#sphere");
+
+setupRotation(svg, projection);
 
 var g = svg.append("g");
 
