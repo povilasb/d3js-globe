@@ -1,28 +1,24 @@
 function setupRotation(svg, projection) {
-  var spinX = d3.scaleLinear()
-    .domain([0, width])
-    .range([-180, 180]);
-
-  var spinY = d3.scaleLinear()
-    .domain([0, height])
-    .range([90, -90]);
-
-  var mouseDown = false;
+  var lastRotation = [0, 0, 0];
+  var mouseDownPos = false;
 
   svg.on("mousemove", function() {
-    if (mouseDown == true) {
+    if (mouseDownPos) {
       var p = d3.mouse(this);
-      projection.rotate([spinX(p[0]), spinY(p[1])]);
+      diffX = (p[0] - mouseDownPos[0]) / 4;
+      diffY = (p[1] - mouseDownPos[1]) / 4;
+      projection.rotate([lastRotation[0] + diffX, lastRotation[1] - diffY]);
       svg.selectAll("path").attr("d", path);
     }
   });
 
   svg.on("mousedown", function() {
-    mouseDown = true;
+    mouseDownPos = d3.mouse(this);
+    lastRotation = projection.rotate()
   });
 
   svg.on("mouseup", function() {
-    mouseDown = false;
+    mouseDownPos = false;
   });
 }
 
