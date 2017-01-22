@@ -2,7 +2,7 @@
 About
 =====
 
-This is a simple game built with d3js.
+This is a sample globe built with d3js v4.0.
 
 References
 ==========
