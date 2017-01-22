@@ -4,6 +4,8 @@ About
 
 This is a sample globe built with d3js v4.0.
 
+.. image:: sample.png
+
 References
 ==========
 
