@@ -4,6 +4,8 @@ About
 
 This is a sample globe built with d3js v4.0.
 
+See live sample at: https://povilasb.github.io/d3js-globe/.
+
 .. image:: sample.png
 
 References
