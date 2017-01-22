@@ -14,6 +14,11 @@ function setupRotation(svg, projection) {
     svg.selectAll("circle")
       .attr("cx", function (d) { return projection([d.lon, d.lat])[0]; })
       .attr("cy", function (d) { return projection([d.lon, d.lat])[1]; })
+      .style("opacity", function (d) {
+        // TODO: make opacity 0 (marker invisible) when circle is out of
+        // visible area.
+        return 0.7;
+      });
     }
   });
 
