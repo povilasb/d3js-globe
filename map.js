@@ -1,6 +1,7 @@
 function setupRotation(svg, projection) {
   var lastRotation = [0, 0, 0];
   var mouseDownPos = false;
+  var cometHits = [];
 
   svg.on("mousemove", function() {
     if (mouseDownPos) {
@@ -9,12 +10,33 @@ function setupRotation(svg, projection) {
       diffY = (p[1] - mouseDownPos[1]) / 4;
       projection.rotate([lastRotation[0] + diffX, lastRotation[1] - diffY]);
       svg.selectAll("path").attr("d", path);
+
+    svg.selectAll("circle")
+      .attr("cx", function (d) { return projection([d.lon, d.lat])[0]; })
+      .attr("cy", function (d) { return projection([d.lon, d.lat])[1]; })
     }
   });
 
   svg.on("mousedown", function() {
     mouseDownPos = d3.mouse(this);
     lastRotation = projection.rotate()
+  });
+
+
+  svg.on("dblclick", function() {
+    mousePos = d3.mouse(this);
+    coords = projection.invert(mousePos);
+    cometHits.push({'lon': coords[0], 'lat': coords[1]});
+
+    svg.selectAll("circle")
+      .data(cometHits)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) { return projection([d.lon, d.lat])[0]; })
+      .attr("cy", function (d) { return projection([d.lon, d.lat])[1]; })
+      .attr("r", 5)
+      .style("fill", "blue")
+      .style("opacity", 0.7);
   });
 
   svg.on("mouseup", function() {
@@ -52,8 +74,7 @@ var g = svg.append("g");
 
 d3.json("countries.json", function(error, topology) {
   g.selectAll()
-    .data(topojson.object(topology, topology.objects.countries)
-      .geometries)
+    .data(topojson.object(topology, topology.objects.countries).geometries)
       .enter()
       .append("path")
       .attr("d", path)
